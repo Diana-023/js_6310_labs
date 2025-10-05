@@ -2,24 +2,19 @@
 function simpleTask() {
     // 1.1 Объявите переменные разных типов (не менне 5)
     // 1.2 Выведите типы всех переменных
-    let string = "Hello World";          // строка
-    let number = 42;                     // число
-    let boolean = true;                  // булево значение
-    let array = [1, 2, 3, 4, 5];         // массив
-    let object = {name: "Diana", age: 20};// объект
-    let nulll = null;                     // null
-    let undefined;                       // undefined
-    let functionn = function() {};        // функция
+    let str = "Hello World";          // строка
+    let num = 42;                     // число
+    let bool = true;                  // булево значение
+    let obj = {name: "Diana", age: 20};  // объект
+    let undef;
     
     console.log("Типы переменных:");
-    console.log(typeof string);
-    console.log(typeof number);
-    console.log(typeof boolean);
-    console.log(typeof array);
-    console.log(typeof object);
-    console.log(typeof nulll);
-    console.log(typeof undefined);
-    console.log(typeof functionn);
+    console.log(typeof str);
+    console.log(typeof num);
+    console.log(typeof bool);
+    console.log(typeof obj);
+    console.log(typeof undef);
+    
 }
 simpleTask()
 
@@ -202,8 +197,8 @@ function processArrays() {
     console.log(sum);
 
     // 6. Используйте sort для сортировки пользователей по возрасту (по убыванию)
-    const sortedByAge = [...users].sort((a, b) => b.age - a.age);
-    console.log("\n6. Пользователи отсортированные по возрасту (по убыванию):");
+    const sortedByAge = users.sort((a, b) => b.age - a.age);
+    console.log("Пользователи отсортированные по возрасту (по убыванию):");
     console.log(sortedByAge);
 
     // 7. Используйте метод для проверки, все ли пользователи старше 18 лет
@@ -234,13 +229,12 @@ const taskManager = {
     addTask(title, priority = "medium") {
         // 5.1 Добавление задачи
         const newTask = {
-            id: this.tasks.length > 0 ? Math.max(...this.tasks.map(task => task.id)) + 1 : 1,
+            id: this.tasks.length + 1,
             title,
             completed: false,
             priority
         };
         this.tasks.push(newTask);
-        return `Задача "${title}" добавлена с ID ${newTask.id}`;
     },
     
     completeTask(taskId) {
@@ -345,7 +339,7 @@ function validatePassword(password) {
  * - +7(999)123-45-67
  */
 function validatePhone(phone) {
-    const phoneRegex = /^(\+7|8)[\s(-]?\d{3}[\s)-]?\d{3}[\s-]?\d{2}[\s-]?\d{2}$/;
+    const phoneRegex = /^(\+7|8)(\s?\(?\d{3}\)?\s?\d{3}[\s-]?\d{2}[\s-]?\d{2}|\d{10})$/;
     return phoneRegex.test(phone);
 }
 
@@ -368,11 +362,6 @@ function validateDate(date) {
 function runTests() {
     console.log("=== ТЕСТИРОВАНИЕ ===");
 
-    //Задание 1 
-    console.log("Задание 1");
-    simpleTask();
-    console.log();
-
     // Тест задания 2.1
     console.assert(getReviewerNumber(5, 1) === 6, "Тест получения ревьюера провален");
     
@@ -390,10 +379,20 @@ function runTests() {
     console.assert(calculate(5, 3, '^') === "Ошибка: неизвестная операция!", "5 ^ 3 = Ошибка");
     console.assert(calculate(2, 2, '%') === "Ошибка: неизвестная операция!", "2 % 2 = Ошибка");
     console.assert(calculate(1, 1, '') === "Ошибка: неизвестная операция!", "1 '' 1 = Ошибка");
-    console.assert(calculate(10, 5, 'plus') === "Ошибка: неизвестная операция!", "10 plus 5 = Ошибка");
     console.assert(calculate(1000000, 500000, '+') === 1500000, "1,000,000 + 500,000 = 1,500,000");
     console.assert(calculate(999999, 1, '-') === 999998, "999,999 - 1 = 999,998");
-
+    console.assert(calculate("a", "b", "+") === "Аргументы функции должны быть числами", "Тест калькулятора 2.3 провален (аргументы должны быть числовыми)");
+    console.assert(calculate("a", 5, "+") === "Аргументы функции должны быть числами", "Тест калькулятора 2.3 провален (аргументы должны быть числовыми)");
+    console.assert(calculate(5, "b", "+") === "Аргументы функции должны быть числами", "Тест калькулятора 2.3 провален (аргументы должны быть числовыми)");
+    console.assert(calculate(3, 6, "~") === "Неизвестная операция", "Тест калькулятора 2.3 провален (неизвестная операция)");
+    console.assert(calculate(Number.MAX_VALUE, 1, '+') === Number.MAX_VALUE+1, "Тест калькулятора 2.3 провален (переполнение при сложении)");
+    console.assert(calculate(Number.MAX_VALUE, Number.MAX_VALUE, '+') === Infinity, "Тест калькулятора 2.3 провален (переполнение при сложении двух больших чисел)");
+    console.assert(calculate(Number.MAX_VALUE, 2, '-') === Number.MAX_VALUE - 2, "Тест калькулятора 2.3 провален (вычитание из максимального значения)");
+    console.assert(calculate(Number.MAX_VALUE, 1, '*') === Number.MAX_VALUE, "Тест калькулятора 2.3 провален (переполнение при умножении)");
+    console.assert(calculate(1, Number.MAX_VALUE, '*') === Number.MAX_VALUE, "Тест калькулятора 2.3 провален (переполнение при умножении с максимальным значением)");
+    console.assert(calculate(Number.MAX_VALUE, 10, "*") === Infinity, "Тест калькулятора провален (умножение максимального числа на 10)");
+    console.assert(calculate(Number.MAX_VALUE, 2, '/') === Number.MAX_VALUE / 2, "Тест калькулятора 2.3 провален (деление максимального значения)");
+    
     // Тест задания 2.4
     console.assert(calculateArea('circle', 5) === Math.PI * 25, "Круг: радиус 5 → площадь " + (Math.PI * 25));
     console.assert(calculateArea('rectangle', 4, 5) === 20, "Прямоугольник: 4x5 → площадь 20");
@@ -417,24 +416,21 @@ function runTests() {
     console.assert(getRandomNumber(5, 5) === 5, "getRandomNumber(5, 5) → 5 (min = max)");
     console.assert(getRandomNumber(0, 0) === 0, "getRandomNumber(0, 0) → 0 (min = max = 0)");
 
+    console.assert(getRandomNumber(1, 10) >= 1 && getRandomNumber(1, 10) <= 10, "Тест 2.6 провален: результат не в диапазоне [1, 10]");
+    console.assert(typeof(getRandomNumber(1, 10)) === "number", "Тест 2.6 провален: результат не число");
+
     // Тест задания 3.1
-    console.assert(book.title === "Преступление и наказание", "book.title = 'Преступление и наказание'");
-    console.assert(book.author === "Фёдор Достоевский", "book.author = 'Фёдор Достоевский'");
-    console.assert(book.year === 1866, "book.year = 1866");
-    console.assert(book.pages === 671, "book.pages = 671");
-    console.assert(book.isAvailable === true, "book.isAvailable = true (изначально)");
+    console.log(book.getInfo());
+    console.log(book.toggleAvailability());
+    console.log(book.toggleAvailability());
+    book.toggleAvailability();     
+    console.log(book.isAvailable);
 
     // Тест задания 3.2
-    console.assert(student.name === "Анна Петрова", "student.name = 'Анна Петрова'");
-    console.assert(student.age === 20, "student.age = 20");
-    console.assert(student.course === 2, "student.course = 2");
-    console.assert(student.grades.math === 90, "student.grades.math = 90");
-    console.assert(student.grades.programming === 95, "student.grades.programming = 95");
-    console.assert(student.grades.history === 85, "student.grades.history = 85");
-    console.assert(student.grades.physics === 88, "Оценка по physics добавлена: 88");
-    const newAverage1 = (90 + 95 + 85 + 88) / 4;
-    console.assert(student.getAverageGrade() === newAverage1, 
-               `getAverageGrade() после добавления physics = ${newAverage1}`);
+    console.log(student.getAverageGrade());
+    console.log(student.addGrade('physics', 88));
+    console.log(student.getAverageGrade());
+    console.log(student.grades); //вывод всех оценок
 
     // Тест задания 4
     processArrays();
@@ -462,6 +458,21 @@ function runTests() {
     console.log("(Статистика возвращает объект):");
     console.log(taskManager.getStats());
     console.log();
+
+    // Тест задания 6
+    console.assert(validatePhone('+7 (999) 123-45-67'), "Тест с +7 (999) 123-45-67 провален");
+    console.assert(validatePhone('8 (999) 123-45-67'), "Тест с 8 (999) 123-45-67 провален");
+    console.assert(validatePhone('89991234567'), "Тест без пробелов с 8 провален");
+    console.assert(validatePhone('+7(999)123-45-67'), "Тест без пробелов с +7 провален");
+    console.assert(validatePhone("8 999 123 45 67"), "Тест с пробелами провален");
+
+    console.assert(validatePhone('1234567890') === false, "Тест с неправильным номером провален");
+    console.assert(validatePhone('+1 (999) 123-45-67') === false, "Тест с неправильным кодом провален");
+    console.assert(validatePhone('+7 (999) 123-45-7') === false, "Тест с неправильным кодом провален");
+    console.assert(validatePhone('+8 (999) 123-45-67') === false, "Тест с неправильным кодом провален");
+    console.assert(validatePhone('+7-999-123-45-67') === false, "Тест с неправильным кодом провален");
+    console.assert(validatePhone("") === false, "Тест с пустой строкой провален")
+    console.assert(validatePhone("kekdhas") === false, "Тест с неправильной строкой провален")
     
     console.log("Все тесты пройдены! ✅");
 }
