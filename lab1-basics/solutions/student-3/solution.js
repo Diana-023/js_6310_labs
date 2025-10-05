@@ -36,6 +36,9 @@ function getVariant(number, variants) {
 
 function calculate(a, b, operation) {
     // 2.3 Напишите функцию калькулятор, калькулятор обрабатывает следующие операции: +, -, *, /
+    if(typeof(a) !== "number" || typeof(b) !== "number"){
+        return "Аргументы функции должны быть числами"
+    }
     if (operation === '+') {
         return a + b;
     } 
@@ -447,7 +450,7 @@ function runTests() {
     console.log();
 
     console.log("Удаление элемента");
-    taskManager.deleteTask(2);
+    taskManager.deleteTask(1);
     console.log(taskManager.tasks);
     console.log();
 
