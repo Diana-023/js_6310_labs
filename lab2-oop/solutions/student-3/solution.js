@@ -48,6 +48,15 @@ class Vehicle {
         if (newYear > currentYear) {
             throw new Error('Год выпуска не может быть больше текущего года');
         }
+        if (typeof newYear !== 'number'){
+            throw new Error("Неправильный тип данных года машины")
+        }
+        if (newYear <1886){
+            throw new Error ("новый год выпуска не может быть меньше 1886")
+        }
+        if (!Number.isInteger(newYear)){
+            throw new Error ("год выпуска должен быть целым числом")
+        }
         this._year = newYear;
     }
 
@@ -73,13 +82,13 @@ class Car extends Vehicle {
     // Добавьте новое свойство numDoors (количество дверей).
     constructor(make, model, year, numDoors) {
         // Вызываем конструктор родительского класса
-        super(make, model, year);
 
         if (typeof numDoors !== 'number' || isNaN(numDoors) || !Number.isInteger(numDoors) || numDoors <= 0) {
-            Vehicle.vehicleCount--
             throw new TypeError("Некорректное количество дверей");
         }
+
         // Добавляем новое свойство для Car
+        super(make, model, year);
         this.numDoors = numDoors;
     }
 
@@ -103,13 +112,12 @@ class ElectricCar extends Car {
     // Создайте дочерний класс ElectricCar, который наследуется от Car.
     // Добавьте новое свойство batteryCapacity (емкость батареи в кВт·ч).
     constructor(make, model, year, numDoors, batteryCapacity) {
-        super(make, model, year, numDoors);
-        this.batteryCapacity = batteryCapacity;
         
         if (typeof batteryCapacity !== "number" || isNaN(batteryCapacity) || !Number.isInteger(batteryCapacity) || batteryCapacity <= 0) {
-            Vehicle.vehicleCount--
             throw new TypeError('Некорректная емкость батареи');
         }
+        super(make, model, year, numDoors);
+        this.batteryCapacity = batteryCapacity;
     }
 
     // Переопределите метод displayInfo() для вывода дополнительной информации о батарее.
@@ -167,85 +175,85 @@ function runTests() {
     try{
         const vehicleError = new Vehicle(Toyota, 'Camry', 2015)
     }
-    catch{
-        console.error("Ошибка: марка и модель должны быть непустыми строками");
+    catch(error){
+        console.assert("Ошибка: марка и модель должны быть непустыми строками");
     }
 
     try{
         const vehicleError = new Vehicle('', 'Camry', 2015)
     }
-    catch{
-        console.error("Ошибка: марка и модель должны быть непустыми строками");
+    catch(error){
+        console.assert("Ошибка: марка и модель должны быть непустыми строками");
     }
 
     try{
         const vehicleError = new Vehicle(1, 'Camry', 2015)
     }
-    catch{
-        console.error("Ошибка: марка и модель должны быть непустыми строками");
+    catch(error){
+        console.assert("Ошибка: марка и модель должны быть непустыми строками");
     }
 
     try{
         const vehicleError = new Vehicle('Toyota', '', 2015)
     }
-    catch{
-        console.error("Ошибка: марка и модель должны быть непустыми строками");
+    catch(error){
+        console.assert("Ошибка: марка и модель должны быть непустыми строками");
     }
 
     try{
         const vehicleError = new Vehicle('Toyota', Camry, 2015)
     }
-    catch{
-        console.error("Ошибка: марка и модель должны быть непустыми строками");
+    catch(error){
+        console.assert("Ошибка: марка и модель должны быть непустыми строками");
     }
 
     try{
         const vehicleError = new Vehicle('Toyota', 1, 2015)
     }
-    catch{
-        console.error("Ошибка: марка и модель должны быть непустыми строками");
+    catch(error){
+        console.assert("Ошибка: марка и модель должны быть непустыми строками");
     }
 
     try{
         const vehicleError = new Vehicle('Toyota', 'Camry', '2015')
     }
-    catch{
-        console.error("Ошибка: год выпуска должен быть целым числом");
+    catch(error){
+        console.assert("Ошибка: год выпуска должен быть целым числом");
     }
 
     try{
         const vehicleError = new Vehicle('Toyota', 'Camry')
     }
-    catch{
-        console.error("Ошибка: год выпуска должен быть целым числом");
+    catch(error){
+        console.assert("Ошибка: год выпуска должен быть целым числом");
     }
 
     try{
         const vehicleError = new Vehicle('Toyota', 'Camry', 2015.5)
     }
-    catch{
-        console.error("Ошибка: год выпуска должен быть целым числом");
+    catch(error){
+        console.assert("Ошибка: год выпуска должен быть целым числом");
     }
 
     try{
         const vehicleError = new Vehicle('Toyota', 'Camry', 2030)
     }
-    catch{
-        console.error("Ошибка");
+    catch(error){
+        console.assert("Ошибка");
     }
 
     try{
         const vehicleError = new Vehicle('Toyota', 'Camry', 1)
     }
-    catch{
-        console.error("Ошибка");
+    catch(error){
+        console.assert("Ошибка");
     }
 
     try{
         const vehicleToyota = 2026
     }
-    catch{
-        console.error("Ошибка: год выпуска должен быть целым числом");
+    catch(error){
+        console.assert("Ошибка: год выпуска должен быть целым числом");
     }
 
     console.assert(vehicleToyota.make === 'Toyota', "Тест make провален");
@@ -259,8 +267,26 @@ function runTests() {
     const nextyear = new Date().getFullYear() + 1;
     vehicleToyota.year = nextyear;
     }
-    catch{
-        console.error("Ошибка: год выпуска не может быть больше текущего года");
+    catch(error){
+        console.assert("Ошибка: год выпуска не может быть больше текущего года");
+    }
+    try{
+    newYear !== 'jnbkjdni'
+    }
+    catch(error){
+        console.assert("Ошибка: год выпуска должен быть числом");
+    }
+    try{
+    newYear <1886
+    }
+    catch(error){
+        console.assert("Ошибка: год выпуска не может быть больше 1886 года");
+    }
+    try{
+    newYear == 2000.5
+    }
+    catch(error){
+        console.assert("Ошибка: год выпуска должен быть целым числом");
     }
 
     // Тест Car
@@ -273,106 +299,106 @@ function runTests() {
     try{
         const carError = new Car('Honda', 'Civic', 2018, 0);
     }
-    catch{
-        console.error("Ошибка: некорректное количество дверей");
+    catch(error){
+        console.assert("Ошибка: некорректное количество дверей");
     }
 
     try{
         const carError = new Car('Honda', 'Civic', 2018, 4.5);
     }
-    catch{
-        console.error("Ошибка: некорректное количество дверей");
+    catch(error){
+        console.assert("Ошибка: некорректное количество дверей");
     }
 
     try{
         const carError = new Car('Honda', 'Civic', 2018, '4');
     }
-    catch{
-        console.error("Ошибка: некорректное количество дверей");
+    catch(error){
+        console.assert("Ошибка: некорректное количество дверей");
     }
 
     try{
         const carError = new Car('Honda', 'Civic', 2018);
     }
-    catch{
-        console.error("Ошибка: некорректное количество дверей");
+    catch(error){
+        console.assert("Ошибка: некорректное количество дверей");
     }
 
     try{
         const carError = new Car('', 'Civic', 2018, 4);
     }
-    catch{
-        console.error("Ошибка: марка и модель должны быть непустыми строками");
+    catch(error){
+        console.assert("Ошибка: марка и модель должны быть непустыми строками");
     }
 
     try{
         const carError = new Car(Honda, 'Civic', 2018, 4);
     }
-    catch{
-        console.error("Ошибка: марка и модель должны быть непустыми строками");
+    catch(error){
+        console.assert("Ошибка: марка и модель должны быть непустыми строками");
     }
 
     try{
         const carError = new Car(1, 'Civic', 2018, 4);
     }
-    catch{
-        console.error("Ошибка: марка и модель должны быть непустыми строками");
+    catch(error){
+        console.assert("Ошибка: марка и модель должны быть непустыми строками");
     }
 
     try{
         const carError = new Car('Honda', '', 2018, 4);
     }
-    catch{
-        console.error("Ошибка: марка и модель должны быть непустыми строками");
+    catch(error){
+        console.assert("Ошибка: марка и модель должны быть непустыми строками");
     }
 
     try{
         const carError = new Car('Honda', Civic, 2018, 4);
     }
-    catch{
-        console.error("Ошибка: марка и модель должны быть непустыми строками");
+    catch(error){
+        console.assert("Ошибка: марка и модель должны быть непустыми строками");
     }
 
     try{
         const carError = new Car('Honda', 1, 2018, 4);
     }
-    catch{
-        console.error("Ошибка: марка и модель должны быть непустыми строками");
+    catch(error){
+        console.assert("Ошибка: марка и модель должны быть непустыми строками");
     }
 
     try{
         const vehicleError = new Vehicle('Honda', 'Civic', '2018', 4)
     }
-    catch{
-        console.error("Ошибка: год выпуска должен быть целым числом");
+    catch(error){
+        console.assert("Ошибка: год выпуска должен быть целым числом");
     }
 
     try{
         const vehicleError = new Vehicle('Honda', 'Civic', 2018.5, 4)
     }
-    catch{
-        console.error("Ошибка: год выпуска должен быть целым числом");
+    catch(error){
+        console.assert("Ошибка: год выпуска должен быть целым числом");
     }
 
     try{
         const vehicleError = new Vehicle('Honda', 'Civic', 2018.5, 4)
     }
-    catch{
-        console.error("Ошибка: год выпуска должен быть целым числом");
+    catch(error){
+        console.assert("Ошибка: год выпуска должен быть целым числом");
     }
 
     try{
         const vehicleError = new Vehicle('Honda', 'Civic', 2030, 4)
     }
-    catch{
-        console.error("Ошибка");
+    catch(error){
+        console.assert("Ошибка");
     }
 
     try{
         const vehicleError = new Vehicle('Honda', 'Civic', 1, 4)
     }
-    catch{
-        console.error("Ошибка");
+    catch(error){
+        console.assert("Ошибка");
     }
 
     console.assert(carHonda.make === 'Honda', "Тест make провален");
@@ -398,120 +424,120 @@ function runTests() {
     try{
         const electricError = new ElectricCar('Tesla', 'Model 3', 2020, 4, undefined);
     }
-    catch{
-        console.error("Ошибка: емкость батареи должна быть указана");
+    catch(error){
+        console.assert("Ошибка: емкость батареи должна быть указана");
     }
   
     try{
         const electricError = new ElectricCar('', 'Model 3', 2020, 4, 75);
     }
-    catch{
-        console.error("Ошибка: марка и модель должны быть непустыми строками");
+    catch(error){
+        console.assert("Ошибка: марка и модель должны быть непустыми строками");
     }
    
     try{
         const electricError = new ElectricCar(Tesla, 'Model 3', 2020, 4, 75);
     }
-    catch{
-        console.error("Ошибка: марка и модель должны быть непустыми строками");
+    catch(error){
+        console.assert("Ошибка: марка и модель должны быть непустыми строками");
     }
  
     try{
         const electricError = new ElectricCar(1, 'Model 3', 2020, 4, 75);
     }
-    catch{
-        console.error("Ошибка: марка и модель должны быть непустыми строками");
+    catch(error){
+        console.assert("Ошибка: марка и модель должны быть непустыми строками");
     }
   
     try{
         const electricError = new ElectricCar('Tesla', '', 2020, 4, 75);
     }
-    catch{
-        console.error("Ошибка: марка и модель должны быть непустыми строками");
+    catch(error){
+        console.assert("Ошибка: марка и модель должны быть непустыми строками");
     }
  
     try{
         const electricError = new ElectricCar('Tesla', 1, 2020, 4, 75);
     }
-    catch{
-        console.error("Ошибка: марка и модель должны быть непустыми строками");
+    catch(error){
+        console.assert("Ошибка: марка и модель должны быть непустыми строками");
     }
   
     try{
         const electricError = new ElectricCar('Tesla', 'Model 3', 2020.5, 4, 75);
     }
-    catch{
-        console.error("Ошибка: год выпуска должен быть целым числом");
+    catch(error){
+        console.assert("Ошибка: год выпуска должен быть целым числом");
     }
   
     try{
         const electricError = new ElectricCar('Tesla', 'Model 3', '2020', 4, 75);
     }
-    catch{
-        console.error("Ошибка: год выпуска должен быть целым числом");
+    catch(error){
+        console.assert("Ошибка: год выпуска должен быть целым числом");
     }
    
     try{
         const electricError = new ElectricCar('Tesla', 'Model 3', 2030, 4, 75);
     }
-    catch{
-        console.error("Ошибка");
+    catch(error){
+        console.assert("Ошибка");
     }
    
     try{
         const electricError = new ElectricCar('Tesla', 'Model 3', 1, 4, 75);
     }
-    catch{
-        console.error("Ошибка");
+    catch(error){
+        console.assert("Ошибка");
     }
   
     try{
         const electricError = new ElectricCar('Tesla', 'Model 3', 2020, '4', 75);
     }
-    catch{
-        console.error("Ошибка: некорректное количество дверей");
+    catch(error){
+        console.assert("Ошибка: некорректное количество дверей");
     }
    
     try{
         const electricError = new ElectricCar('Tesla', 'Model 3', 2020, 0, 75);
     }
-    catch{
-        console.error("Ошибка: некорректное количество дверей");
+    catch(error){
+        console.assert("Ошибка: некорректное количество дверей");
     }
    
     try{
         const electricError = new ElectricCar('Tesla', 'Model 3', 2020, 4.5, 75);
     }
-    catch{
-        console.error("Ошибка: некорректное количество дверей");
+    catch(error){
+        console.assert("Ошибка: некорректное количество дверей");
     }
  
     try{
         const electricError = new ElectricCar('Tesla', 'Model 3', 2020, 4, '75');
     }
-    catch{
-        console.error("Ошибка: некорректная емкость батареи");
+    catch(error){
+        console.assert("Ошибка: некорректная емкость батареи");
     }
  
     try{
         const electricError = new ElectricCar('Tesla', 'Model 3', 2020, 4, 75.5);
     }
-    catch{
-        console.error("Ошибка: некорректная емкость батареи");
+    catch(error){
+        console.assert("Ошибка: некорректная емкость батареи");
     }
 
     try{
         const electricError = new ElectricCar('Tesla', 'Model 3', 2020, 4, 0);
     }
-    catch{
-        console.error("Ошибка: некорректная емкость батареи");
+    catch(error){
+        console.assert("Ошибка: некорректная емкость батареи");
     }
 
     try{
         const electricError = new ElectricCar('Tesla', 'Model 3', 2020, 4);
     }
-    catch{
-        console.error("Ошибка: некорректная емкость батареи");
+    catch(error){
+        console.assert("Ошибка: некорректная емкость батареи");
     }
 
 
@@ -552,6 +578,9 @@ function runTests() {
     console.assert(testVehicle.age === (new Date().getFullYear() - 2010), 'Тест возраста провален');
 
     console.log('Всего создано транспортных средств:', Vehicle.getTotalVehicles());
+    
+    console.assert(Vehicle.getTotalVehicles() === 7, 'Тест количества созданных машин провален');
+
     console.log('Все тесты пройдены! ✅');
 }
 
