@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "KAI Green IT",
+  "version": "1.0",
+  "description": "Добавляет экологичный режим для сайта kai.ru - забота о природе важна!",
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  "host_permissions": ["https://kai.ru/*", "http://kai.ru/*", "https://abiturientu.kai.ru/", "http://abiturientu.kai.ru/"],
+  "content_scripts": [
+    {
+      "matches": ["https://kai.ru/*", "http://kai.ru/*",  "https://abiturientu.kai.ru/", "http://abiturientu.kai.ru/"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
